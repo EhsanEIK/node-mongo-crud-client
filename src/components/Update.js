@@ -4,11 +4,24 @@ import { useLoaderData } from 'react-router-dom';
 const Update = () => {
     const storedUser = useLoaderData();
 
-    const [user, setUser] = useState();
+    const [user, setUser] = useState(storedUser);
 
     const handleUpdateUser = event => {
         event.preventDefault();
-        console.log(user);
+        fetch(`http://localhost:5000/users/${storedUser._id}`, {
+            method: "PUT",
+            headers: {
+                'content-type': 'application/json',
+            },
+            body: JSON.stringify(user)
+        })
+            .then(res => res.json())
+            .then(data => {
+                if (data.modifiedCount > 0) {
+                    alert('User updated successfully!!!')
+                    // console.log(user);
+                }
+            })
     }
 
     const handleInputChange = event => {
@@ -16,7 +29,7 @@ const Update = () => {
         const value = event.target.value;
         const newUser = { ...user }
         newUser[field] = value;
-        setUser(newUser)
+        setUser(newUser);
     }
 
     return (
@@ -29,7 +42,7 @@ const Update = () => {
                 <br />
                 <input onChange={handleInputChange} defaultValue={storedUser.email} type="email" name="email" placeholder='email' required />
                 <br />
-                <button type='submit'>Add User</button>
+                <button type='submit'>Update User</button>
             </form>
         </div>
     );
