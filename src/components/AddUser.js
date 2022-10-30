@@ -22,6 +22,7 @@ const AddUser = () => {
             })
         // console.log(user)
     }
+
     const handleInputBlur = event => {
         const field = event.target.name;
         const value = event.target.value;
